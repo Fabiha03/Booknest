@@ -21,6 +21,7 @@
         <div id="authButtons">
           <a href="login.html" class="header-btn">Login</a>
           <a href="register.html" class="header-btn">Sign Up</a>
+          <a href="#" onclick="checkAdminAccess(event)" class="header-btn admin-btn">Admin Panel</a>
         </div>
         <div id="userActions" style="display: none;">
           <a href="dashboard.html" class="header-btn">Dashboard</a>
@@ -331,6 +332,32 @@
         }
       });
     });
+
+    function checkAdminAccess(event) {
+      event.preventDefault();
+      const { auth, db } = getFirebaseInstances();
+      
+      if (auth.currentUser) {
+        // User is logged in, check if admin
+        db.collection("users").doc(auth.currentUser.uid).get()
+          .then(doc => {
+            if (doc.exists && doc.data().isAdmin) {
+              window.location.href = "admin.html";
+            } else {
+              alert("Access denied. Admins only.");
+              window.location.href = "dashboard.html";
+            }
+          })
+          .catch(error => {
+            console.error("Error checking admin status:", error);
+            alert("Error checking permissions. Please try again.");
+          });
+      } else {
+        // User not logged in, redirect to login
+        alert("Please login first.");
+        window.location.href = "login.html";
+      }
+    }
   </script>
 </body>
 </html>
