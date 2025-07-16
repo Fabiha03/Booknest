@@ -18,9 +18,17 @@
       <h1>📚 BookNest</h1>
       <p>Your trusted book review platform</p>
       <div class="header-actions">
-        <a href="login.html" class="header-btn">Login</a>
-        <a href="register.html" class="header-btn">Sign Up</a>
-        <a href="admin.html" class="header-btn admin-btn">Admin Panel</a>
+        <div id="authButtons">
+          <a href="login.html" class="header-btn">Login</a>
+          <a href="register.html" class="header-btn">Sign Up</a>
+        </div>
+        <div id="userActions" style="display: none;">
+          <a href="dashboard.html" class="header-btn">Dashboard</a>
+          <a href="#" onclick="logout()" class="header-btn">Logout</a>
+        </div>
+        <div id="adminActions" style="display: none;">
+          <a href="admin.html" class="header-btn admin-btn">Admin Panel</a>
+        </div>
       </div>
     </div>
   </header>
@@ -53,7 +61,9 @@
             <p>Find your next favorite book through community recommendations</p>
           </div>
         </div>
-        <a href="register.html" class="cta-btn primary">Get Started Today</a>
+        <div id="ctaSection">
+          <a href="register.html" class="cta-btn primary">Get Started Today</a>
+        </div>
       </div>
     </section>
   </main>
@@ -70,13 +80,21 @@
   </footer>
 
   <style>
-    /* Your existing styles from home.html */
+    .header-content {
+      position: relative;
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      color: white;
+    }
+
     .header-actions {
       position: absolute;
       top: 20px;
       right: 30px;
       display: flex;
       gap: 15px;
+      align-items: center;
     }
 
     .header-btn {
@@ -289,5 +307,30 @@
       }
     }
   </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const { auth, db } = getFirebaseInstances();
+
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          document.getElementById('authButtons').style.display = 'none';
+          document.getElementById('userActions').style.display = 'flex';
+
+          db.collection("users").doc(user.uid).get().then(doc => {
+            if (doc.exists && doc.data().isAdmin) {
+              document.getElementById('adminActions').style.display = 'block';
+            }
+          }).catch(() => {
+            document.getElementById('adminActions').style.display = 'none';
+          });
+        } else {
+          document.getElementById('authButtons').style.display = 'flex';
+          document.getElementById('userActions').style.display = 'none';
+          document.getElementById('adminActions').style.display = 'none';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
