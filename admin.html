@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Panel - BookNest</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>📚 BookNest Admin Panel</h1>
+      <p>Manage book reviews and approvals</p>
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="admin-stats">
+      <h2>Review Management</h2>
+      <p>Review and approve submitted book reviews</p>
+    </section>
+
+    <section class="book-list" id="adminBooks">
+      <p>Loading reviews...</p>
+    </section>
+
+    <section class="admin-management" style="margin-top:40px;">
+      <h2>Admin Management</h2>
+
+      <h3>Current Admins:</h3>
+      <ul id="adminList">
+        <li>Loading admins...</li>
+      </ul>
+
+      <h3>Promote User to Admin</h3>
+      <form id="promoteForm">
+        <input type="email" id="promoteEmail" placeholder="User's Email to Promote" required />
+        <button type="submit">Promote</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      loadAdmin();
+    });
+  </script>
+</body>
+</html>

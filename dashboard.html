@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BookNest - Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>📚 BookNest</h1>
+      <p>Your trusted book review platform</p>
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <section class="search-bar">
+    <input type="text" id="searchBar" placeholder="Search books, authors, or reviews..." oninput="searchReviews()" />
+  </section>
+
+  <main class="main-content">
+    <section class="form-section">
+      <h2>Submit a Book Review</h2>
+      <form id="reviewForm">
+        <input type="text" id="bookTitle" placeholder="Book Title" required />
+        <input type="text" id="bookAuthor" placeholder="Author" required />
+        <input type="text" id="bookPrice" placeholder="Price (e.g., $10.99)" required />
+        <input type="url" id="bookLink" placeholder="Buy Link (https://...)" required />
+        <textarea id="bookReview" placeholder="Your review..." required></textarea>
+        <button type="submit">Submit Review</button>
+      </form>
+    </section>
+
+    <section class="book-list" id="userBooks">
+      <p>Loading reviews...</p>
+    </section>
+  </main>
+
+  <script>
+    // Initialize dashboard when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadDashboard();
+    });
+
+    // Handle form submission
+    document.getElementById("reviewForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      submitBook();
+    });
+  </script>
+</body>
+</html>
